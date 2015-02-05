@@ -42,8 +42,9 @@
                                                object:nil];
     
     [SVProgressHUD setDefaultStatus:@"Loading..."];
-//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
     [SVProgressHUD setDefaultDismissLeadTime:0.5f];
+
 }
 
 - (void)handleNotification:(NSNotification *)notif
@@ -85,9 +86,10 @@ static float progress = 0.0f;
 #pragma mark - Dismiss Methods Sample
 
 - (void)dismiss {
-	[SVProgressHUD dismiss];
+    [SVProgressHUD dismissAfter:3 action:^{
+        [SVProgressHUD show];
+    }];
 }
-
 - (IBAction)dismissInfo{
     [SVProgressHUD showInfoWithStatus:@"Useful Information."];
 }

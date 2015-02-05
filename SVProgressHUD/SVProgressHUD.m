@@ -151,7 +151,6 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     SVProgressHUDExtensionView = view;
 }
 
-
 #pragma mark - Show Methods
 
 + (void)show {
@@ -167,33 +166,20 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     [self showWithStatus:nil];
 }
 
-+ (void)showWithStatus:(NSString *)status {
-    [self showProgress:SVProgressHUDUndefinedProgress status:status];
-}
-
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType {
     [self showProgress:SVProgressHUDUndefinedProgress status:status maskType:maskType];
 }
 
 + (void)showProgress:(float)progress {
-    [[self sharedView] showProgress:progress status:SVProgressHUDDefaultStatus maskType:SVProgressHUDDefaultMaskType];
+    [self showProgress:progress status:SVProgressHUDDefaultStatus maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showProgress:(float)progress status:(NSString *)status {
-    [[self sharedView] showProgress:progress status:status maskType:SVProgressHUDDefaultMaskType];
-
-    [self sharedView];
     [self showProgress:progress maskType:SVProgressHUDDefaultMaskType];
 }
 
 + (void)showProgress:(float)progress maskType:(SVProgressHUDMaskType)maskType{
     [self showProgress:progress status:nil maskType:maskType];
-}
-
-+ (void)showProgress:(float)progress status:(NSString *)status {
-    [self sharedView];
-    [self showProgress:progress status:status maskType:SVProgressHUDDefaultMaskType];
->>>>>>> 5badd27a33c193090f5d68e9b49c6a48a1ffc5be
 }
 
 + (void)showProgress:(float)progress status:(NSString *)status maskType:(SVProgressHUDMaskType)maskType {
@@ -261,6 +247,12 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     if ([self isVisible]) {
         [[self sharedView] dismissAfter:duration];
     }
+}
+
++ (void)dismissAfter:(NSTimeInterval)duration action:(void (^)(void))action;
+{
+    action();
+    [[self sharedView] dismissAfter:duration];
 }
 
 #pragma mark - Offset
@@ -770,9 +762,14 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (void)dismissAfter:(NSTimeInterval)duration
 {
+    if (self.fadeOutTimer)
+    {
+        [self.fadeOutTimer invalidate];
+        self.fadeOutTimer = nil;
+    }
+    
     if (duration == 0)
     {
-        self.fadeOutTimer = nil;
         [self dismiss];
     }
     else
