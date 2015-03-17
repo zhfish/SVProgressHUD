@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name     = 'SVProgressHUD'
-  s.version  = '1.1.2A'
-  s.platform = :ios
+  s.version  = '1.1.3A'
+  s.platform = :ios, '6.1'
   s.license  = 'MIT'
   s.summary  = 'A clean and lightweight progress HUD for your iOS app.'
   s.homepage = 'http://samvermette.com/199'
